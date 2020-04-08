@@ -2,7 +2,7 @@ from gtts import gTTS
 import os
 import requests
 import json
-import speech_recognition as sr
+import speech_recognition as sr 
 import datetime
 from selenium import webdriver
 from bs4 import BeautifulSoup
@@ -11,8 +11,64 @@ import pandas as pd
 import re
 import webbrowser
 import smtplib
+#ideas list
+#usermode/guestmode
+#play music (improve using webscraping)
+def rps():
+    b = True
+    while b:
+        speak("starting rock paper scissors")
+        speak("rock paper scissor shoot")
+        f = inputlisten()
+        c = random.randint(1,3)
+        print(c)  
+        if(('rock' in f and c == 1) or ('scissor' in f and c==3) or ('paper' in f and c==2)):
+            speak('Draw')
+        elif(('rock' in f and c==3) or ('scissor' in f and c==2) or ('paper' in f and c==1)):
+            speak('You Win')
+        elif(('rock' in f and c==2) or ('scissor' in f and c==1) or ('paper' in f and c==3)):
+            speak('You Lose')
+        else:
+            speak('ERROR speak again')
+        speak('would you like to continue')
+        ans = inputlisten()
+        if('yes' not in ans):
+            b = False
+def sevenupdown():
+    coins = 50 
+    b = True
+    while b:
+        speak("Starting seven up seven down ")
+        speak("choose 7up ,7down or 7")
+        p = inputlisten()
+        speak('you chose '+p)
+        speak("rolling the dices")
+        a=random.randint(2,12)
+        speak('the number is '+str(a))
+        if((a < 7 and '7down' in p) or  (a>7 and '7up' in p)):
+            speak("you won 20 coins")
+            coins+=20
+        elif(a == 7 and p == '7'):
+            speak("you won 30 coins")
+            coins+=30
+        else:
+            speak("better luck next time")
+            coins-=10
+        speak('would you like to continue')
+        ans = inputlisten()
+        if('yes' in ans):
+            b = False
+def play():
+    reg_ex = re.search('play (.+)', command)
+    if reg_ex:
+        domain = reg_ex.group(1)
+        url = 'https://www.youtube.com'+'/results?search_query='+domain
+        webbrowser.open(url)
+        print('Done!')
+    else:
+        pass
 def askfortask():
-    mytext = 'What can I do for you Kshitiz'
+    mytext = 'What can I do for you sir'
     language = 'en'
     myobj = gTTS(text=mytext, lang=language, slow=False) 
     myobj.save("welcome1.mp3") 
@@ -40,10 +96,26 @@ def listentome():
         command = listentome()
 
     return command
+def inputlisten():
+    r1 = sr.Recognizer()
+    with sr.Microphone() as source:
+        print('I am listnening .... ')
+        r1.pause_threshold = 1
+        r1.adjust_for_ambient_noise(source, duration=1)
+        audio = r1.listen(source)
+    try:
+        c = r1.recognize_google(audio).lower()
+        print('You said: ' + c + '\n')
+    except sr.UnknownValueError:
+        print('Your last command couldn\'t be heard')
+        c = listentome()
+
+    return c
 def weather():
     api_key = "aa425dca334316d164048c7ad4216fab"
     base_url = "http://api.openweathermap.org/data/2.5/weather?"
-    city_name = input("Enter city name : ") 
+    speak("which city are you in ?")
+    city_name = inputlisten()
     complete_url = base_url + "appid=" + api_key + "&q=" + city_name 
     response = requests.get(complete_url) 
     x = response.json() 
@@ -103,32 +175,80 @@ def openweb():
         print('Done!')
     else:
         pass
-while(1):
-    askfortask()
-    command = listentome()
-    if('weather' in command):
-        weather()
-    elif('time' in command):
-        time()
-    elif('date' in command):
-        date()
-    elif('bye' in command or 'adios' in command):
-        break
-    elif('corona' in command):
-        findcases()
-    elif('open ' in command):
-        openweb()
-    elif('reddit' in command):
-        openreddit()
-    elif('who are you' in command or 'your name' in command):
-        speak('I am JARVIS  was created by Kshitiz ')
-    elif('thank you' in command):
-        speak('I am just doing my duty!')
-    elif('pick a number' in command):
-        speak(str(random.randint(1,100)))
-    elif('dice' in command):
-        speak(str(random.randint(1,6)))
-    elif('coin' in command):
-        speak('Heads' if random.randint(1,2)==1 else 'Tails')
-    else:
-        speak("sorry i am still developing!")
+def email():
+    speak("who is the recipient?")
+    recp = input()
+    speak('enter the message')
+    message = input()+'\n\n\n\n This Message was sent using JARVIS'
+    s = smtplib.SMTP('smtp.gmail.com', 587)
+    s.starttls() 
+    s.login("xyz@gmail.com", "pass") 
+    s.sendmail("xyz@gmail.com",recp, message) 
+    s.quit()
+    speak('mail sent')
+def takenotes():
+    f= open("notes.txt","w+")
+    speak("what should i note?")
+    pl = inputlisten()
+    f.write(pl)
+    f.close()
+def readnotes():
+    speak("reading the notes")
+    f = open("notes.txt",'r')
+    contents =f.read()
+    speak(contents)
+if __name__ == '__main__':
+    speak("JARVIS initialising    ")
+    hour = int(datetime.datetime.now().hour)
+    if( hour>= 5 and hour < 12):
+        speak("Good Morning Sir")
+    elif(hour >= 12 and hour <16):
+        speak("Good Afternoon Sir")
+    elif(hour >= 16 and hour <= 23):
+        speak("Good Evening Sir")
+    while(1): 
+        askfortask()
+        command = listentome()
+        if('weather' in command):
+            weather()
+        elif('7 up 7 down' in command):
+            sevenupdown()
+        elif('play' in command):
+            play()
+        elif('time' in command):
+            time()
+        elif('date' in command):
+            date()
+        elif('bye' in command or 'adios' in command or 'nothing' in command or 'hasta la vista' in command):
+            speak('Bye sir!')
+            break
+        elif('corona' in command):
+            findcases()
+        elif('open ' in command):
+            openweb()
+        elif('reddit' in command):
+            openreddit()
+        elif('who are you' in command or 'your name' in command):
+            speak('I am JARVIS I was created by Kshitiz ')
+        elif('thank you' in command):
+            speak('I am just doing my duty!')
+        elif('pick a number' in command):
+            speak(str(random.randint(1,100)))
+        elif('rock paper scissor' in command):
+            rps()
+        elif('dice' in command):
+            speak(str(random.randint(1,6)))
+        elif('coin' in command):
+            speak('Heads' if random.randint(1,2)==1 else 'Tails')
+        elif('take notes' in command):
+            takenotes()
+        elif('read notes' in command):
+            readnotes()
+        elif('email' in command):
+            email()
+        elif('simon says' in command):
+            s = list(command.split())
+            s = s[2:]
+            speak(str(s))
+        else:
+            speak("sorry i am still developing!")
