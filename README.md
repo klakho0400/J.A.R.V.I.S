@@ -12,4 +12,5 @@
 * Play Songs
 * Write emails
 * Play Games
+* Store Notes
 * And many more to be added ;p
