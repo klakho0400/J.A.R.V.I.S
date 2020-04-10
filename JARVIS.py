@@ -1,4 +1,5 @@
 from gtts import gTTS
+from urllib.request import urlopen
 import os
 import requests
 import json
@@ -7,13 +8,12 @@ import datetime
 from selenium import webdriver
 from bs4 import BeautifulSoup
 import random
+import urllib.request
 import pandas as pd
 import re
 import webbrowser
 import smtplib
-#ideas list
-#usermode/guestmode
-#play music (improve using webscraping)
+import string
 def rps():
     b = True
     while b:
@@ -197,6 +197,21 @@ def readnotes():
     f = open("notes.txt",'r')
     contents =f.read()
     speak(contents)
+def search(key):
+    try:
+        key = string.capwords(key)
+        key = key.replace(' ','_')
+        url = 'https://en.wikipedia.org/wiki/'+key
+        print(url)
+        html = urlopen(url) 
+        desc =[]
+        soup = BeautifulSoup(html, 'html.parser')
+        for item in soup.select(".mw-parser-output p"):
+            desc.append(item.text)
+        speak(desc[1])
+    except:
+        speak('i am not able to find what you are looking for')
+
 if __name__ == '__main__':
     speak("JARVIS initialising    ")
     hour = int(datetime.datetime.now().hour)
@@ -250,5 +265,8 @@ if __name__ == '__main__':
             s = list(command.split())
             s = s[2:]
             speak(str(s))
+        elif('who is' in command or 'what is' in command or 'search for' in command):
+            key = command[7:]
+            search(key)
         else:
             speak("sorry i am still developing!")
