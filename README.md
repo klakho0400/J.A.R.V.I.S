@@ -13,4 +13,5 @@
 * Write emails
 * Play Games
 * Store Notes
+* Wiki Search`
 * And many more to be added ;p
