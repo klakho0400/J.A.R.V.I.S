@@ -18,7 +18,7 @@
 * And many more to be added ;p
 
 
-### Dependencies
+## Dependencies
 
 * gTTS
 * urlopen
