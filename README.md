@@ -36,3 +36,6 @@
 * webbrowser
 * smtplib
 
+To run:- 
+python3 JARVIS.py
+
