@@ -20,3 +20,19 @@
 
 ### Dependencies
 
+* gTTS
+* urlopen
+* os
+* requests
+* json
+* speech_recognition 
+* datetime
+* webdriver
+* BeautifulSoup
+* random
+* urllib.request
+* pandas
+* re
+* webbrowser
+* smtplib
+
