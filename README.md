@@ -13,5 +13,10 @@
 * Write emails
 * Play Games
 * Store Notes
-* Wiki Search`
+* Wiki Search
+* Find Location
 * And many more to be added ;p
+
+
+### Dependencies
+
