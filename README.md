@@ -35,6 +35,10 @@
 * re
 * webbrowser
 * smtplib
+* mpg321
+
+To install dependencies:-
+pip3 install -r requirments.txt
 
 To run:- 
 python3 JARVIS.py
