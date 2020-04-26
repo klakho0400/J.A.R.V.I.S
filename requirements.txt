@@ -1,0 +1,8 @@
+gTTS
+urlopen
+requests
+datetime
+selenium
+beautifulsoup4
+pandas
+SpeechRecognition 
