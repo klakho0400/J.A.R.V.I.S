@@ -25,20 +25,25 @@
 * os
 * requests
 * json
-* speech_recognition 
+* SpeechRecognition
 * datetime
 * webdriver
 * BeautifulSoup
 * random
-* urllib.request
+* urllib
 * pandas
 * re
 * webbrowser
 * smtplib
 * mpg321
+* pyaudio
 
 To install dependencies:-
 pip3 install -r requirments.txt
+
+To install pyaudio:-
+Windows: python -m pip install PyAudio
+Linux  : sudo apt install python3-pyaudio
 
 To run:- 
 python3 JARVIS.py
